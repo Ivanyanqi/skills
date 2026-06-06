@@ -1,0 +1,7 @@
+interface:
+  display_name: "Bootstrap Mac Terminal"
+  short_description: "Recreate this polished Mac terminal suite."
+  default_prompt: "Use $bootstrap-mac-terminal to install or refresh this exact Mac terminal setup with iTerm2, powerlevel10k, eza, and Neovim."
+
+policy:
+  allow_implicit_invocation: true
