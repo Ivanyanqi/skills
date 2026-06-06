@@ -8,7 +8,7 @@ source "${SCRIPT_DIR}/common.sh"
 require_macos
 
 if [[ ! -d "${HOME}/.oh-my-zsh" ]]; then
-  log "Installing oh-my-zsh."
+  log "正在安装 oh-my-zsh。"
   RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c \
     "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
@@ -30,12 +30,12 @@ if [[ ! -d "${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ]]; then
     "${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
 fi
 
-if [[ -e "${HOME}/.zshrc" ]] && ! confirm "Replace existing ~/.zshrc with the bundled terminal template?"; then
-  fail "User declined ~/.zshrc replacement."
+if [[ -e "${HOME}/.zshrc" ]] && ! confirm "要用打包好的终端模板替换现有 ~/.zshrc 吗？"; then
+  fail "用户取消了 ~/.zshrc 替换。"
 fi
 
-if [[ -e "${HOME}/.p10k.zsh" ]] && ! confirm "Replace existing ~/.p10k.zsh with the bundled prompt config?"; then
-  fail "User declined ~/.p10k.zsh replacement."
+if [[ -e "${HOME}/.p10k.zsh" ]] && ! confirm "要用打包好的提示符配置替换现有 ~/.p10k.zsh 吗？"; then
+  fail "用户取消了 ~/.p10k.zsh 替换。"
 fi
 
 backup_if_exists "${HOME}/.zshrc"
@@ -45,11 +45,11 @@ cp "${SKILL_ROOT}/assets/zsh/zshrc.template" "${HOME}/.zshrc"
 cp "${SKILL_ROOT}/assets/zsh/p10k.zsh" "${HOME}/.p10k.zsh"
 
 if [[ "${SHELL}" != */zsh ]] && command -v zsh >/dev/null 2>&1; then
-  if confirm "Switch the login shell to $(command -v zsh)?"; then
+  if confirm "要把登录 shell 切换成 $(command -v zsh) 吗？"; then
     chsh -s "$(command -v zsh)"
   else
-    log "Skipped login shell change."
+    log "已跳过登录 shell 切换。"
   fi
 fi
 
-log "Shell prompt setup complete. Open a new terminal session to load the new shell config."
+log "Shell 提示符配置完成。请打开一个新的终端会话以加载新配置。"

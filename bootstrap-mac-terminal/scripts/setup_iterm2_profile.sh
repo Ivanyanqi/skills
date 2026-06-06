@@ -17,11 +17,11 @@ cleanup() {
 }
 trap cleanup EXIT
 
-[[ -f "${profile_asset}" ]] || fail "Missing profile asset: ${profile_asset}"
-[[ -f "${preset_asset}" ]] || fail "Missing preset asset: ${preset_asset}"
+[[ -f "${profile_asset}" ]] || fail "缺少 profile 资源文件：${profile_asset}"
+[[ -f "${preset_asset}" ]] || fail "缺少配色资源文件：${preset_asset}"
 
 if [[ ! -f "${prefs_plist}" ]]; then
-  fail "Launch iTerm2 once, then rerun this script so the preference file exists."
+  fail "请先打开一次 iTerm2，再重新运行这个脚本，让偏好文件先生成出来。"
 fi
 
 cp "${prefs_plist}" "${temp_plist}"
@@ -29,7 +29,7 @@ cp "${prefs_plist}" "${temp_plist}"
 default_guid="$(
   /usr/libexec/PlistBuddy -c 'Print :"Default Bookmark Guid"' "${temp_plist}" 2>/dev/null
 )"
-[[ -n "${default_guid}" ]] || fail "Could not read the default iTerm2 bookmark GUID."
+[[ -n "${default_guid}" ]] || fail "无法读取默认 iTerm2 书签的 GUID。"
 
 profile_index=""
 idx=0
@@ -47,7 +47,7 @@ while true; do
   idx=$((idx + 1))
 done
 
-[[ -n "${profile_index}" ]] || fail "Could not locate the default iTerm2 profile."
+[[ -n "${profile_index}" ]] || fail "找不到默认的 iTerm2 配置档。"
 
 /usr/libexec/PlistBuddy -c 'Print :"Custom Color Presets"' "${temp_plist}" >/dev/null 2>&1 || \
   /usr/libexec/PlistBuddy -c 'Add :"Custom Color Presets" dict' "${temp_plist}"
@@ -61,4 +61,4 @@ done
 defaults import com.googlecode.iterm2 "${temp_plist}"
 killall cfprefsd >/dev/null 2>&1 || true
 
-log "iTerm2 profile defaults applied. Restart iTerm2 if it is already open."
+log "iTerm2 默认 profile 已应用。如果 iTerm2 已经打开，请重启它。"

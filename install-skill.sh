@@ -18,18 +18,18 @@ install_one() {
   local source_dir="${REPO_ROOT}/${skill_name}"
   local target_dir="${TARGET_ROOT}/${skill_name}"
 
-  [[ -d "${source_dir}" ]] || fail "Skill not found: ${skill_name}"
-  [[ -f "${source_dir}/SKILL.md" ]] || fail "Missing SKILL.md in ${skill_name}"
+  [[ -d "${source_dir}" ]] || fail "找不到 skill：${skill_name}"
+  [[ -f "${source_dir}/SKILL.md" ]] || fail "${skill_name} 缺少 SKILL.md"
 
   mkdir -p "${TARGET_ROOT}"
   rm -rf "${target_dir}.codex-sync-old"
   if [[ -d "${target_dir}" ]]; then
     mv "${target_dir}" "${target_dir}.codex-sync-old"
-    log "Backed up existing ${target_dir} -> ${target_dir}.codex-sync-old"
+    log "已备份现有目录 ${target_dir} -> ${target_dir}.codex-sync-old"
   fi
 
   cp -R "${source_dir}" "${target_dir}"
-  log "Installed ${skill_name} -> ${target_dir}"
+  log "已安装 ${skill_name} -> ${target_dir}"
 }
 
 discover_skills() {
@@ -51,13 +51,13 @@ main() {
     done < <(discover_skills)
   fi
 
-  [[ ${#skills[@]} -gt 0 ]] || fail "No skills found to install."
+  [[ ${#skills[@]} -gt 0 ]] || fail "没有找到可安装的 skill。"
 
   for skill in "${skills[@]}"; do
     install_one "${skill}"
   done
 
-  log "Done."
+  log "完成。"
 }
 
 main "$@"

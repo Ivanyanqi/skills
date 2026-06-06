@@ -7,10 +7,10 @@ source "${SCRIPT_DIR}/common.sh"
 
 require_macos
 
-command -v nvim >/dev/null 2>&1 || fail "Neovim is not installed. Run install_homebrew_and_packages.sh first."
+command -v nvim >/dev/null 2>&1 || fail "还没有安装 Neovim，请先运行 install_homebrew_and_packages.sh。"
 
-if [[ -e "${HOME}/.config/nvim" ]] && ! confirm "Replace existing ~/.config/nvim with the bundled Neovim config?"; then
-  fail "User declined ~/.config/nvim replacement."
+if [[ -e "${HOME}/.config/nvim" ]] && ! confirm "要用打包好的 Neovim 配置替换现有 ~/.config/nvim 吗？"; then
+  fail "用户取消了 ~/.config/nvim 替换。"
 fi
 
 backup_if_exists "${HOME}/.config/nvim"
@@ -20,4 +20,4 @@ cp -R "${SKILL_ROOT}/assets/nvim" "${HOME}/.config/nvim"
 nvim --headless "+Lazy! sync" "+qa"
 nvim --headless "+MasonInstall lua-language-server pyright bash-language-server json-lsp yaml-language-server" "+qa"
 
-log "Neovim setup complete."
+log "Neovim 配置完成。"

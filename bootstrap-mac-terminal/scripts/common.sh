@@ -31,12 +31,12 @@ backup_if_exists() {
     local backup
     backup="$(backup_path "${target}")"
     mv "${target}" "${backup}"
-    log "Backed up ${target} -> ${backup}"
+    log "已备份 ${target} -> ${backup}"
   fi
 }
 
 require_macos() {
-  [[ "$(uname -s)" == "Darwin" ]] || fail "This skill currently supports macOS only."
+  [[ "$(uname -s)" == "Darwin" ]] || fail "这个 skill 目前只支持 macOS。"
 }
 
 brew_bin() {
@@ -58,6 +58,6 @@ ensure_line_in_file() {
   touch "${file}"
   if ! grep -Fqx "${line}" "${file}"; then
     printf '%s\n' "${line}" >> "${file}"
-    log "Added line to ${file}: ${line}"
+    log "已向 ${file} 添加内容：${line}"
   fi
 }
