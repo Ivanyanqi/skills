@@ -1,48 +1,48 @@
-# My Skills
+# 我的 Skills
 
-Personal Codex skills managed in a standalone Git repository so they can be reused across machines and shared with other clients.
+这是一个独立管理的 Codex skills 仓库，方便在不同机器之间复用，也方便分享给其他客户端使用。
 
-## Included Skills
+## 当前包含的 Skill
 
 ### `bootstrap-mac-terminal`
 
-Recreates this Mac terminal setup:
+用于复刻这套 Mac 终端环境：
 
 - `iTerm2`
 - `JetBrains Mono Nerd Font`
 - `oh-my-zsh`
 - `powerlevel10k`
-- `eza` aliases
-- lightweight Tokyo Night `Neovim`
+- `eza` 别名
+- 轻量版 Tokyo Night 风格 `Neovim`
 
-Source:
+说明文件：
 
 - [bootstrap-mac-terminal/SKILL.md](/Users/ivanqi/Documents/aiworkspace/my-skills/bootstrap-mac-terminal/SKILL.md)
 
-## Install A Skill Into Codex
+## 安装 Skill 到 Codex
 
-Clone this repository somewhere local, then run the repository installer.
+先把这个仓库 clone 到本地，然后运行仓库级安装脚本。
 
-Example:
+示例：
 
 ```bash
 chmod +x install-skill.sh
 ./install-skill.sh
 ```
 
-Install a specific skill only:
+如果只想安装某一个 skill：
 
 ```bash
 ./install-skill.sh bootstrap-mac-terminal
 ```
 
-## Update Workflow
+## 更新流程
 
-1. Edit or add a skill in this repository.
-2. Commit and push to GitHub.
-3. Run `./install-skill.sh` on the target machine to sync into `~/.codex/skills`.
+1. 在这个仓库里新增或修改 skill。
+2. 提交并推送到 GitHub。
+3. 在目标机器运行 `./install-skill.sh`，同步到 `~/.codex/skills`。
 
-## Notes
+## 说明
 
-- Skills in this repository are intended for Codex-compatible clients.
-- Each skill is self-contained and should include its own `SKILL.md`, scripts, assets, and references where needed.
+- 这个仓库里的 skills 面向兼容 Codex 的客户端。
+- 每个 skill 都应当自包含，包含自己的 `SKILL.md`、脚本、资源文件和参考说明。
