@@ -1,4 +1,4 @@
-# 我的 Skills
+# Skills
 
 这是一个独立管理的 Codex skills 仓库，方便在不同机器之间复用，也方便分享给其他客户端使用。
 
@@ -17,7 +17,7 @@
 
 说明文件：
 
-- [bootstrap-mac-terminal/SKILL.md](/Users/ivanqi/Documents/aiworkspace/my-skills/bootstrap-mac-terminal/SKILL.md)
+- [bootstrap-mac-terminal/SKILL.md](/Users/ivanqi/Documents/aiworkspace/projects/skills/bootstrap-mac-terminal/SKILL.md)
 
 ## 安装 Skill 到 Codex
 
