@@ -1,0 +1,65 @@
+# ============================================================
+# ~/.zshrc — zinit + powerlevel10k 配置
+# 由 terminal-setup skill 生成
+#
+# 提示符切换：
+#   当前：powerlevel10k（~/.p10k.zsh）
+#   备份：starship（~/.config/starship.toml.backup）
+#   切回 starship：注释 p10k 区块，取消注释 starship 区块
+# ============================================================
+
+# ── p10k instant prompt（必须在所有输出之前，放最顶部）────────
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# ── zinit 初始化 ─────────────────────────────────────────────
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d "$ZINIT_HOME" ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d "$ZINIT_HOME/.git" ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# ── 插件加载 ─────────────────────────────────────────────────
+# powerlevel10k 主题（必须在其他插件之前）
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+# oh-my-zsh 内置插件（通过 snippet 加载）
+zinit snippet OMZP::git
+zinit snippet OMZP::extract
+
+# 第三方插件
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-history-substring-search
+
+# syntax-highlighting 必须最后加载
+zinit light zsh-users/zsh-syntax-highlighting
+
+# ── 补全系统 ─────────────────────────────────────────────────
+autoload -Uz compinit
+compinit -d ~/.zcompdump
+
+# ── 历史记录配置 ─────────────────────────────────────────────
+HISTSIZE=50000
+SAVEHIST=50000
+HISTFILE=~/.zsh_history
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt SHARE_HISTORY
+setopt EXTENDED_HISTORY
+
+# ── 按键绑定 ─────────────────────────────────────────────────
+# history-substring-search：↑↓ 键绑定
+bindkey '^[[A' history-substring-search-up    # ↑
+bindkey '^[[B' history-substring-search-down  # ↓
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
+
+# ── 别名 ─────────────────────────────────────────────────────
+alias ls='eza --color=always --icons'
+alias la='eza -la --color=always --icons'
+alias ll='eza -l --color=always --icons'
+
+# ── powerlevel10k 配置（运行 `p10k configure` 重新配置）──────
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh

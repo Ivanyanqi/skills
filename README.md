@@ -19,6 +19,18 @@
 
 - [bootstrap-mac-terminal/SKILL.md](/Users/ivanqi/Documents/aiworkspace/projects/skills/bootstrap-mac-terminal/SKILL.md)
 
+### `terminal-setup`
+
+一键安装 yanqi 当前这套终端配置（Ghostty + zinit + powerlevel10k + eza），替代旧版 `bootstrap-mac-terminal`：
+
+- `Ghostty`（TokyoNight 主题，JetBrainsMono Nerd Font）
+- `JetBrainsMono Nerd Font`
+- `zinit` 插件管理器（替代 oh-my-zsh）
+- `powerlevel10k` 提示符（内置配置，无需走向导）
+- `eza` 别名（ls/la/ll）
+
+说明文件：[terminal-setup/SKILL.md](./terminal-setup/SKILL.md)
+
 ## 安装 Skill 到 Codex
 
 先把这个仓库 clone 到本地，然后运行仓库级安装脚本。
