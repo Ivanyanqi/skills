@@ -1,0 +1,111 @@
+# ============================================================
+# ~/.zshrc — 交互式 shell 行为配置
+#
+# 只放交互式 shell 相关内容：插件、提示符、历史、按键绑定、别名、工具初始化
+# 环境变量（PATH 等）统一在 ~/.zshenv 中管理
+# 版本管理（Node / Java / Python）由 mise 统一接管
+#
+# 提示符：powerlevel10k（~/.p10k.zsh）
+#   首次使用运行 `p10k configure` 进行配置
+# ============================================================
+
+# ── p10k instant prompt（必须在所有输出之前，放最顶部）────────
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# ── zinit 初始化 ─────────────────────────────────────────────
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d "$ZINIT_HOME" ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d "$ZINIT_HOME/.git" ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# ── 插件加载 ─────────────────────────────────────────────────
+# powerlevel10k 主题：必须同步加载，不能懒加载
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+# oh-my-zsh 内置插件：体积小，同步加载
+zinit snippet OMZP::git
+zinit snippet OMZP::extract
+
+# zsh-completions：必须在 compinit 前加入 fpath，同步加载
+zinit light zsh-users/zsh-completions
+
+# ── 懒加载插件（wait lucid：shell 提示符出现后异步加载）────────
+# autosuggestions：atload 触发初始化，避免首次无效
+zinit ice lucid wait atload'_zsh_autosuggest_start'
+zinit light zsh-users/zsh-autosuggestions
+
+# history-substring-search：atload 绑定按键（加载后才能 bindkey）
+zinit ice lucid wait atload'
+  bindkey "^[[A" history-substring-search-up
+  bindkey "^[[B" history-substring-search-down
+  bindkey "^P" history-substring-search-up
+  bindkey "^N" history-substring-search-down
+'
+zinit light zsh-users/zsh-history-substring-search
+
+# autopair / you-should-use / forgit：无依赖，直接异步
+zinit ice lucid wait; zinit light hlissner/zsh-autopair
+zinit ice lucid wait; zinit light MichaelAquilina/zsh-you-should-use
+zinit ice lucid wait; zinit light wfxr/forgit
+
+# fast-syntax-highlighting：zsh-syntax-highlighting 的性能优化分支，必须最后加载
+zinit ice lucid wait
+zinit light zdharma-continuum/fast-syntax-highlighting
+
+# ── 补全系统 ─────────────────────────────────────────────────
+fpath+=(${ZINIT_HOME%/*}/plugins/zsh-users---zsh-completions/src)
+autoload -Uz compinit
+# 24 小时内复用缓存，避免每次重建（提升启动速度）
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit -d ~/.zcompdump
+else
+  compinit -C -d ~/.zcompdump
+fi
+
+# ── 历史记录配置 ─────────────────────────────────────────────
+HISTSIZE=50000
+SAVEHIST=50000
+HISTFILE=~/.zsh_history
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt SHARE_HISTORY
+setopt EXTENDED_HISTORY
+
+# ── zsh 体验优化 ──────────────────────────────────────────────
+setopt AUTO_CD        # 直接输入目录名即可 cd，无需显式输入 cd
+setopt CORRECT        # 命令拼错时提示纠正（Did you mean...?）
+setopt NO_BEEP        # 关闭错误提示音
+setopt GLOB_DOTS      # 通配符 * 匹配隐藏文件（.dotfiles）
+
+# ── 别名 ─────────────────────────────────────────────────────
+# eza（替代 ls）
+alias ls='eza --color=always --icons'
+alias la='eza -la --color=always --icons'
+alias ll='eza -l --color=always --icons'
+alias lt='eza --tree --color=always --icons'
+
+# bat（替代 cat）
+alias cat='bat --paging=never'
+alias catp='bat'
+
+# lazygit
+alias lg='lazygit'
+
+# ── mise（版本管理：Node / Java / Python）────────────────────
+eval "$($HOME/.local/bin/mise activate zsh)"
+
+# ── uv (Python 工具链) ────────────────────────────────────────
+[[ -f "$HOME/.local/bin/env" ]] && . "$HOME/.local/bin/env"
+
+# ── fzf（模糊搜索，增强 Ctrl+R / Ctrl+T / Alt+C）────────────
+eval "$(fzf --zsh)"
+
+# ── zoxide（智能目录跳转，替代 cd）───────────────────────────
+eval "$(zoxide init zsh)"
+
+# ── powerlevel10k 配置（运行 `p10k configure` 重新配置）──────
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh

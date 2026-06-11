@@ -1,0 +1,47 @@
+# ============================================================
+# ~/.zshenv — 环境变量唯一入口
+#
+# zsh 在所有场景下都会加载此文件（交互式、非交互式、脚本执行）
+# 规则：只放纯环境变量，不放任何有副作用的命令（no source、no eval、no echo）
+#
+# 版本管理（Node / Java / Python）由 mise 统一接管，无需在此硬编码路径
+# ============================================================
+
+# ── 清除 nvm 残留（已迁移到 mise，防止旧进程环境污染）────────
+unset NVM_DIR NVM_BIN NVM_INC NVM_CD_FLAGS 2>/dev/null || true
+# 从 PATH 中移除所有含 .nvm 的路径段（纯 zsh，不依赖外部命令）
+() {
+  local -a _clean_path=()
+  local _p
+  for _p in ${(s[:])PATH}; do
+    [[ "$_p" != *".nvm"* ]] && _clean_path+=("$_p")
+  done
+  export PATH="${(j[:])_clean_path}"
+}
+
+# ── 清除 pyenv 残留 ───────────────────────────────────────────
+unset PYENV_ROOT PYENV_VERSION PYENV_SHELL 2>/dev/null || true
+() {
+  local -a _clean_path=()
+  local _p
+  for _p in ${(s[:])PATH}; do
+    [[ "$_p" != *".pyenv"* ]] && _clean_path+=("$_p")
+  done
+  export PATH="${(j[:])_clean_path}"
+}
+
+# ── 清除 jenv 残留 ────────────────────────────────────────────
+() {
+  local -a _clean_path=()
+  local _p
+  for _p in ${(s[:])PATH}; do
+    [[ "$_p" != *".jenv"* ]] && _clean_path+=("$_p")
+  done
+  export PATH="${(j[:])_clean_path}"
+}
+
+# ── mise shims（通用）────────────────────────────────────────
+# 确保非交互式环境下 python/node 也走 mise 管理的版本
+[[ -d "$HOME/.local/share/mise/shims" ]] && \
+  [[ ":$PATH:" != *":$HOME/.local/share/mise/shims:"* ]] && \
+  export PATH="$HOME/.local/share/mise/shims:$PATH"

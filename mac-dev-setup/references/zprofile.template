@@ -1,0 +1,8 @@
+# ============================================================
+# ~/.zprofile — 登录 shell 初始化
+#
+# 只放登录时需要执行一次的内容
+# Homebrew 环境变量在此初始化（Apple Silicon: /opt/homebrew，Intel: /usr/local）
+# ============================================================
+
+eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv 2>/dev/null)"
